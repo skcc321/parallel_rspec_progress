@@ -1,32 +1,14 @@
 #!/usr/bin/env ruby
 
-require "ruby-progressbar"
 require "drb/drb"
+require "parallel_rspec_progress/controller"
 
-class Controller
-  attr_reader :progressbar
-
-  def stop
-    DRb.stop_service
-  end
-
-  def progressbar?
-    @progressbar
-  end
-
-  def create_progressbar(total)
-    @progressbar = ProgressBar.create(
-      format: "%a %e %P% Processed: %c from %C %b\u{15E7}%i %p%% %t",
-      progress_mark: ' ',
-      remainder_mark: "\u{FF65}",
-      starting_at: 0,
-      total: total,
-    )
-  end
-end
-
-controller = Controller.new
-
+controller = ParallelRspecProgress::Controller.new
 DRb.start_service('druby://localhost:9999', controller)
 
-%x[cd ../ && $(bundle show parallel_tests)/bin/parallel_rspec spec --test-options '--require ./parallel-tests-progress/parallel_progress_formatter.rb --format ParallelProgressFormatter']
+# parallel spec run with custom formatter
+parallel_exacutable = "$(bundle show parallel_tests)/bin/parallel_rspec"
+formatter = "$(bundle show parallel_rspec_progress)/lib/parallel_rspec_progress/formatter.rb"
+format = "ParallelProgressFormatter"
+
+%x[#{parallel_exacutable} spec --test-options '--require #{formatter} --format #{format}']

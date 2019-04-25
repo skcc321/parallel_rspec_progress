@@ -4,6 +4,7 @@ RSpec.describe ParallelRspecProgress do
   end
 
   it "does something useful" do
-    expect(false).to eq(true)
+    sleep(1)
+    expect(true).to eq(true)
   end
 end
