@@ -1,5 +1,6 @@
 require "ruby-progressbar"
 require "drb/drb"
+require "rainbow"
 
 module ParallelRspecProgress
   class Controller
@@ -12,6 +13,7 @@ module ParallelRspecProgress
 
     def stop
       DRb.stop_service
+      process_results
     end
 
     def put_total(val)
@@ -34,8 +36,8 @@ module ParallelRspecProgress
         @pending << item
       end
 
-      @progressbar.increment
       @progressbar.title = compose_title
+      @progressbar.increment
     end
 
     private
@@ -51,7 +53,15 @@ module ParallelRspecProgress
       end
 
       def compose_title
-        "passed: #{@passed.count}  failed: #{@failed.count}  pending: #{@pending.count}"
+        "passed: #{Rainbow(@passed.count).green}  failed: #{Rainbow(@failed.count).red}  pending: #{Rainbow(@pending.count).yellow}"
+      end
+
+      def process_results
+        if @failed.any?
+          puts @failed.map {|x| "#{Rainbow(x).red}" }
+        else
+          puts Rainbow("Everything is OK!").green
+        end
       end
   end
 end

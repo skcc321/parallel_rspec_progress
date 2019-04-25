@@ -29,14 +29,14 @@ class ParallelProgressFormatter
   end
 
   def example_passed(notification)
-    controller.add(key: :passed, item: 1)
+    controller.add(key: :passed, item: notification.example.location)
   end
 
   def example_failed(notification)
-    controller.add(key: :failed, item: 1)
+    controller.add(key: :failed, item: notification.example.location)
   end
 
   def example_pending(notification)
-    controller.add(key: :pending, item: 1)
+    controller.add(key: :pending, item: notification.example.location)
   end
 end
