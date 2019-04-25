@@ -1,5 +1,5 @@
-require 'parallel_tests'
-require 'drb/drb'
+require "parallel_tests"
+require "drb/drb"
 
 class ParallelProgressFormatter
   RSpec::Core::Formatters.register self,
@@ -17,11 +17,7 @@ class ParallelProgressFormatter
   end
 
   def start(notification)
-    if controller.progressbar?
-      controller.progressbar.total += notification.count
-    else
-      controller.create_progressbar(notification.count)
-    end
+    controller.put_total(notification.count)
   end
 
   def close(notification)
@@ -33,14 +29,14 @@ class ParallelProgressFormatter
   end
 
   def example_passed(notification)
-    controller.progressbar.increment
+    controller.add(key: :passed, item: 1)
   end
 
   def example_failed(notification)
-    controller.progressbar.increment
+    controller.add(key: :failed, item: 1)
   end
 
   def example_pending(notification)
-    controller.progressbar.increment
+    controller.add(key: :pending, item: 1)
   end
 end
