@@ -36,8 +36,8 @@ Gem::Specification.new do |spec|
   spec.executables   = ["prp"]
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "parallel_tests"
-  spec.add_dependency "ruby-progressbar"
+  spec.add_dependency "parallel_tests", '~> 2.7', '>= 2.7.1'
+  spec.add_dependency "ruby-progressbar", '~> 1.10'
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 10.0"

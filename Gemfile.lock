@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    parallel_rspec_progress (0.1.0)
-      parallel_tests
-      ruby-progressbar
+    parallel_rspec_progress (0.1.1)
+      parallel_tests (~> 2.7, >= 2.7.1)
+      ruby-progressbar (~> 1.10)
 
 GEM
   remote: https://rubygems.org/
